@@ -56,11 +56,11 @@ module CrossValidation
                         :classifying, :fetch_sample_value, :fetch_sample_class]
     end
 
-    # Returns the number of folds to partition the documents into.
+    # Returns the size of the folds to partition the documents into.
     #
     # @return [Fixnum]
     def k
-      @k ||= percentage ? (documents.size * percentage) : folds
+      @k ||= percentage ? (documents.size * percentage) : (documents.size / folds)
     end
 
     # Checks if all of the required run parameters are set.
@@ -100,7 +100,7 @@ module CrossValidation
       partitions = Partitioner.subset(documents, k)
 
       results = partitions.map.with_index do |part, i|
-        training_samples = Partitioner.exclude_index(documents, i)
+        training_samples = Partitioner.exclude_index(partitions, i)
 
         classifier_instance = classifier.call()
 
