@@ -18,7 +18,7 @@ module CrossValidation
         fail ArgumentError, "Can't create equal subsets when k=#{k}"
       end
 
-      ary.each_slice(k).to_a
+      ary.shuffle.each_slice(k).to_a
     end
 
     # Returns a flattened copy of the original array without an element at
